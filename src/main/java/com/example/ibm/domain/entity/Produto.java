@@ -12,8 +12,8 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "medicamento")
-public class Medicamento {
+@Table(name = "produto")
+public class Produto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,16 +22,14 @@ public class Medicamento {
     @Column(name = "nome")
     private String nome;
 
-    @Column(name = "marca")
-    private String marca;
+    @Column(name = "tipo")
+    private String tipo;
 
     @Column(name = "codigo_de_barras")
     private String codigoDeBarras;
 
-    @Column(name = "valor")
-    private Number valor;
+    @Column(name = "preco")
+    private Double preco;
 
-    @ManyToOne
-    private Cliente cliente;
 
 }
