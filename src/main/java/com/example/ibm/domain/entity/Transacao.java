@@ -30,5 +30,5 @@ public class Transacao {
     private Cliente cliente;
 
     @ManyToOne
-    private Medicamento medicamento;
+    private Produto medicamento;
 }
