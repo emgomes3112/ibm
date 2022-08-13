@@ -1,6 +1,9 @@
 package com.example.ibm.api.controller;
 
 
+import com.example.ibm.api.mapper.ClienteMapper;
+import com.example.ibm.api.request.ClienteRequest;
+import com.example.ibm.api.response.ClienteResponse;
 import com.example.ibm.domain.entity.Cliente;
 import com.example.ibm.domain.service.ClienteService;
 import lombok.RequiredArgsConstructor;
@@ -19,50 +22,55 @@ import java.util.Optional;
 public class ClienteController {
 
     private final ClienteService service;
+    private final ClienteMapper mapper;
 
     @PostMapping
-    public ResponseEntity<Cliente> salvar(@RequestBody Cliente cliente){
+    public ResponseEntity<ClienteResponse> salvar(@RequestBody ClienteRequest request){
 
+        Cliente cliente = mapper.toCliente(request);
         Cliente clienteSalvo = service.salvar(cliente);
-        return ResponseEntity.status(HttpStatus.CREATED).body(clienteSalvo);
+        ClienteResponse clienteResponse = mapper.toClienteResponse(clienteSalvo);
+        return ResponseEntity.status(HttpStatus.CREATED).body(clienteResponse);
 
     }
     @GetMapping
-    public ResponseEntity<List<Cliente>>  listarTodos(){
+    public ResponseEntity<List<ClienteResponse>>  listarTodos(){
 
-        List<Cliente> cliente = service.listarTodos();
-        return ResponseEntity.status(HttpStatus.OK).body(cliente);
+        List<Cliente> clientes = service.listarTodos();
+        List<ClienteResponse> clienteResponses = mapper.toClienteResponseList(clientes);
+        return ResponseEntity.status(HttpStatus.OK).body(clienteResponses);
+
 
     }
     @GetMapping("/{id}")
-    public ResponseEntity<Cliente>  buscarPorId(@PathVariable Long id){
+    public ResponseEntity<ClienteResponse>  buscarPorId(@PathVariable Long id){
 
         Optional<Cliente> clienteOptional = service.buscarPorId(id);
-
         if(clienteOptional.isEmpty()) {
 
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.status(HttpStatus.OK).body(clienteOptional.get());
+        return ResponseEntity.status(HttpStatus.OK).body(mapper.toClienteResponsePorId(clienteOptional.get()));
 
     }
     @GetMapping("/cpf/{cpf}")
-    public ResponseEntity<Cliente>  buscarPorCpf(@PathVariable String cpf){
+    public ResponseEntity<ClienteResponse>  buscarPorCpf(@PathVariable String cpf){
 
         Optional<Cliente> clienteOptional = service.buscarPorCpf(cpf);
-
         if(clienteOptional.isEmpty()) {
 
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.status(HttpStatus.OK).body(clienteOptional.get());
+        return ResponseEntity.status(HttpStatus.OK).body(mapper.toClienteResponsePorCpf(clienteOptional.get()));
 
     }
-    @PutMapping
-    public  ResponseEntity<Cliente> atualizar(@RequestBody Cliente cliente){
+    @PutMapping("/{id}")
+    public  ResponseEntity<ClienteResponse> atualizar(@PathVariable Long id, @RequestBody ClienteRequest request){
 
-        Cliente clienteSalvo = service.salvar(cliente);
-        return ResponseEntity.status(HttpStatus.OK).body(clienteSalvo);
+        Cliente cliente = mapper.toCliente(request);
+        Cliente clienteSalvo = service.alterar(id,cliente);
+        ClienteResponse clienteResponse = mapper.toClienteResponse(clienteSalvo);
+        return ResponseEntity.status(HttpStatus.OK).body(clienteResponse);
 
     }
     @DeleteMapping("/{id}")

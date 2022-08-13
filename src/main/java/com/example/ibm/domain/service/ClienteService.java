@@ -52,6 +52,17 @@ public class ClienteService {
 
         clienteRepository.deleteById(id);
     }
+    public Cliente alterar(Long id, Cliente cliente) {
+        Optional<Cliente> clienteOptional = this.buscarPorId(id);
+
+        if (clienteOptional.isEmpty()) {
+            throw new BusinessException("CLIENTE NÃO ENCONTRADO!");
+        }
+
+        cliente.setId(id);
+
+        return salvar(cliente);
+    }
 
 
 
