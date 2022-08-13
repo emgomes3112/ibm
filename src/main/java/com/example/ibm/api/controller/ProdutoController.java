@@ -1,9 +1,7 @@
 package com.example.ibm.api.controller;
 
 
-import com.example.ibm.domain.entity.Cliente;
 import com.example.ibm.domain.entity.Produto;
-import com.example.ibm.domain.service.ClienteService;
 import com.example.ibm.domain.service.ProdutoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

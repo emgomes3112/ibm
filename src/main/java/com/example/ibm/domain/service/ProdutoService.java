@@ -1,7 +1,6 @@
 package com.example.ibm.domain.service;
 
 
-import com.example.ibm.domain.entity.Cliente;
 import com.example.ibm.domain.entity.Produto;
 import com.example.ibm.domain.repository.ProdutoRepository;
 import com.example.ibm.exception.BusinessException;

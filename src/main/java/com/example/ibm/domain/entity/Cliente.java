@@ -1,10 +1,10 @@
 package com.example.ibm.domain.entity;
 
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 
 @Getter
