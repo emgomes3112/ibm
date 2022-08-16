@@ -17,41 +17,42 @@ public class ClienteService {
 
     private final ClienteRepository clienteRepository;
 
-    public Cliente salvar(Cliente cliente){
+    public Cliente salvar(Cliente cliente) {
         boolean existeCpf = false;
         Optional<Cliente> clienteOptional = clienteRepository.findByCpf(cliente.getCpf());
-        if(clienteOptional.isPresent()){
-            if(!clienteOptional.get().getId().equals(cliente.getId())){
+        if (clienteOptional.isPresent()) {
+            if (!clienteOptional.get().getId().equals(cliente.getId())) {
 
                 existeCpf = true;
 
             }
         }
-        if(existeCpf){
+        if (existeCpf) {
             throw new BusinessException("CPF JÁ CADASTRADO");
         }
 
         return clienteRepository.save(cliente);
     }
 
-    public List<Cliente> listarTodos(){
+    public List<Cliente> listarTodos() {
         return clienteRepository.findAll();
     }
 
-    public Optional<Cliente> buscarPorId(Long id){
+    public Optional<Cliente> buscarPorId(Long id) {
 
         return clienteRepository.findById(id);
     }
 
-    public Optional<Cliente> buscarPorCpf(String cpf){
+    public Optional<Cliente> buscarPorCpf(String cpf) {
 
         return clienteRepository.findByCpf(cpf);
     }
 
-    public void deletar(Long id){
+    public void deletar(Long id) {
 
         clienteRepository.deleteById(id);
     }
+
     public Cliente alterar(Long id, Cliente cliente) {
         Optional<Cliente> clienteOptional = this.buscarPorId(id);
 
@@ -63,8 +64,6 @@ public class ClienteService {
 
         return salvar(cliente);
     }
-
-
 
 
 }

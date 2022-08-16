@@ -18,39 +18,59 @@ public class ProdutoService {
 
     private final ProdutoRepository produtoRepository;
 
-    public Produto salvar(Produto produto){
+    public Produto salvar(Produto produto) {
 
         boolean existeCodigoDeBarras = false;
         Optional<Produto> produtoOptional = produtoRepository.findByCodigoDeBarras(produto.getCodigoDeBarras());
-        if(produtoOptional.isPresent()){
-            if(!produtoOptional.get().getId().equals(produto.getId())){
+        if (produtoOptional.isPresent()) {
+            if (!produtoOptional.get().getId().equals(produto.getId())) {
 
                 existeCodigoDeBarras = true;
 
             }
         }
-        if(existeCodigoDeBarras){
+        if (existeCodigoDeBarras) {
             throw new BusinessException("CODIGO DE BARRAS JÁ CADASTRADO");
         }
         return produtoRepository.save(produto);
 
     }
 
-    public List<Produto> listarTodos(){
+    public List<Produto> listarTodos() {
         return produtoRepository.findAll();
     }
 
-    public Optional<Produto> buscarPorId(Long id){
+    public Optional<Produto> buscarPorId(Long id) {
 
         return produtoRepository.findById(id);
     }
-    public Optional<Produto> buscarCodigoDeBarras(String codigoDeBarras){
+
+    public Optional<Produto> buscarCodigoDeBarras(String codigoDeBarras) {
 
         return produtoRepository.findByCodigoDeBarras(codigoDeBarras);
     }
 
-    public void deletar(Long id){
+    public void deletar(Long id) {
+
+        Optional<Produto> produtoOptional = this.buscarPorId(id);
+
+        if (produtoOptional.isEmpty()) {
+
+            throw new BusinessException("CLIENTE NÃO ENCONTRADO!");
+        }
 
         produtoRepository.deleteById(id);
+    }
+
+    public Produto alterar(Long id, Produto produto) {
+
+        Optional<Produto> produtoOptional = this.buscarPorId(id);
+        if (produtoOptional.isEmpty()) {
+
+            throw new BusinessException("CLIENTE NÃO ENCONTRADO!");
+        }
+        produto.setId(id);
+
+        return salvar(produto);
     }
 }
